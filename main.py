@@ -9,7 +9,7 @@ app = FastAPI()
 BOT_TOKEN = "8871134392:AAFU4CAjCd380AqopflGw88JqfvdrvW_ooU"
 FOOTBALL_API_KEY = "4f31e3c49b6b4d30a630068bd0545209"
 
-# চ্যানেল ইউজারনেম
+# আপডেট করা চ্যানেল ইউজারনেম
 CHANNEL_BDSTREAM = "@bdstreamhub00"
 CHANNEL_DLSPORTS = "@DLSports"
 
@@ -134,13 +134,27 @@ def home():
 @app.get("/trigger-schedule")
 def trigger_daily_notice():
   # BDStreamHub নোটিশ
-  msg_bd = build_message("BDStreamHub", "@BDStreamHub")
-  if msg_bd:
-    send_telegram(CHANNEL_BDSTREAM, msg_bd)
+  msg_bd = build_message("BDStreamHub", "@bdstreamhub00")
+  res_bd = None
+  res_dl = None
 
-  # DLSports নোটিশ
-  msg_dl = build_message("DLSports", "@DLSports")
-  if msg_dl:
-    send_telegram(CHANNEL_DLSPORTS, msg_dl)
+  if not msg_bd:
+    # আজ কোনো হাই-ভোল্টেজ ম্যাচ না পেলে একটি টেস্ট নোটিশ পাঠাবে
+    test_msg_bd = (
+        "🔥 <b>TODAY'S FIXTURE UPDATE</b> ✨\n\n"
+        "No high-voltage match scheduled for today.\n\n"
+        "🔰 <b>BDStreamHub</b> ✨\n📢 @bdstreamhub00"
+    )
+    test_msg_dl = (
+        "🔥 <b>TODAY'S FIXTURE UPDATE</b> ✨\n\n"
+        "No high-voltage match scheduled for today.\n\n"
+        "🔰 <b>DLSports</b> ✨\n📢 @DLSports"
+    )
+    res_bd = send_telegram(CHANNEL_BDSTREAM, test_msg_bd).json()
+    res_dl = send_telegram(CHANNEL_DLSPORTS, test_msg_dl).json()
+  else:
+    msg_dl = build_message("DLSports", "@DLSports")
+    res_bd = send_telegram(CHANNEL_BDSTREAM, msg_bd).json()
+    res_dl = send_telegram(CHANNEL_DLSPORTS, msg_dl).json()
 
-  return {"status": "Success", "message": "Notice posted successfully"}
+  return {"BDStreamHub_Result": res_bd, "DLSports_Result": res_dl}
