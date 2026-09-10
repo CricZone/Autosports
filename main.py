@@ -10,7 +10,7 @@ BOT_TOKEN = "8871134392:AAFU4CAjCd380AqopflGw88JqfvdrvW_ooU"
 FOOTBALL_API_KEY = "4f31e3c49b6b4d30a630068bd0545209"
 
 # চ্যানেল ইউজারনেম
-CHANNEL_BDSTREAM = "@BDStreamHub"
+CHANNEL_BDSTREAM = "@bdstreamhub00"
 CHANNEL_DLSPORTS = "@DLSports"
 
 STREAM_BASE_URL = "https://www.footem.co.uk"
